@@ -5,8 +5,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.mateusz.grabarski.appdaggerarchitecture.di.Injector;
+import com.mateusz.grabarski.appdaggerarchitecture.di.ScreenInjector;
 
 import java.util.UUID;
+
+import javax.inject.Inject;
 
 /**
  * Created by Mateusz Grabarski on 09.02.2018.
@@ -15,6 +18,9 @@ import java.util.UUID;
 public abstract class BaseActivity extends AppCompatActivity {
 
     private static String INSTANCE_ID_KEY = "instance_id";
+
+    @Inject
+    ScreenInjector screenInjector;
 
     private String mInstanceId;
 
@@ -49,5 +55,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (isFinishing()) {
             Injector.clearComponent(this);
         }
+    }
+
+    public ScreenInjector getScreenInjector() {
+        return screenInjector;
     }
 }
