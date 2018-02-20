@@ -14,6 +14,7 @@ import com.bluelinelabs.conductor.Router;
 import com.mateusz.grabarski.appdaggerarchitecture.R;
 import com.mateusz.grabarski.appdaggerarchitecture.di.Injector;
 import com.mateusz.grabarski.appdaggerarchitecture.di.ScreenInjector;
+import com.mateusz.grabarski.appdaggerarchitecture.ui.ScreenNavigator;
 
 import java.util.UUID;
 
@@ -29,6 +30,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Inject
     ScreenInjector screenInjector;
+
+    @Inject
+    ScreenNavigator screenNavigator;
 
     private String mInstanceId;
     private Router router;
@@ -51,6 +55,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         router = Conductor.attachRouter(this, screenContainer, savedInstanceState);
 
+        screenNavigator.initWithRoute(router, initialScreen());
+
         monitorBackStack();
 
         super.onCreate(savedInstanceState);
@@ -59,11 +65,20 @@ public abstract class BaseActivity extends AppCompatActivity {
     @LayoutRes
     protected abstract int layoutRes();
 
+    protected abstract Controller initialScreen();
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
         outState.putString(INSTANCE_ID_KEY, mInstanceId);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!screenNavigator.pop()) {
+            super.onBackPressed();
+        }
     }
 
     public String getInstanceId() {
@@ -73,6 +88,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        screenNavigator.clear();
 
         if (isFinishing()) {
             Injector.clearComponent(this);

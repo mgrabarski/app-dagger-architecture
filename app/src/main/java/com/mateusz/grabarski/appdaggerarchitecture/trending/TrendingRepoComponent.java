@@ -2,7 +2,6 @@ package com.mateusz.grabarski.appdaggerarchitecture.trending;
 
 import com.mateusz.grabarski.appdaggerarchitecture.di.scopes.ScreenScope;
 
-import dagger.Component;
 import dagger.Subcomponent;
 import dagger.android.AndroidInjector;
 
