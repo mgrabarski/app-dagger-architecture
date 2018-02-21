@@ -1,5 +1,8 @@
 package com.mateusz.grabarski.appdaggerarchitecture.base;
 
+import com.mateusz.grabarski.appdaggerarchitecture.data.RepoServiceModule;
+import com.mateusz.grabarski.appdaggerarchitecture.network.ServiceModule;
+
 import javax.inject.Singleton;
 
 import dagger.Component;
@@ -10,7 +13,9 @@ import dagger.Component;
 @Singleton
 @Component(modules = {
         ApplicationModule.class,
-        ActivityBindingModule.class
+        ActivityBindingModule.class,
+        ServiceModule.class,
+        RepoServiceModule.class
 })
 public interface ApplicationComponent {
 
